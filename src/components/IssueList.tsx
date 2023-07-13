@@ -1,15 +1,4 @@
 import { useContext } from 'react';
-<<<<<<< HEAD
-
-import { GitHubContext, GitHubState } from '../common/context/GitHubContext';
-
-const IssueList = () => {
-  const { issues, loading, error }: GitHubState = useContext(GitHubContext);
-
-  if (loading) {
-    return <div>Loading ... </div>;
-  }
-=======
 import IssueItem from './IssueItem';
 import { styled } from 'styled-components';
 import { GitHubStateContext } from '../common/context/GitHubContext';
@@ -26,15 +15,11 @@ const IssueList = () => {
   const { setTarget } = useInfiniteScroll({
     fetchNextPage: fetchIssues,
   });
->>>>>>> 7-feat-add-github-context
 
   if (error) {
     return <div>error: {error}</div>;
   }
 
-<<<<<<< HEAD
-  return <div></div>;
-=======
   return (
     <IssueListStyle>
       {issues.map((issue, idx) => (
@@ -46,7 +31,6 @@ const IssueList = () => {
       {loading ? <Loading /> : <div ref={setTarget} />}
     </IssueListStyle>
   );
->>>>>>> 7-feat-add-github-context
 };
 
 const IssueListStyle = styled.article`

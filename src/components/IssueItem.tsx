@@ -1,10 +1,7 @@
 import { useState } from 'react';
-<<<<<<< HEAD
-=======
 import { Issue } from '../common/interface/GitHub';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
->>>>>>> 7-feat-add-github-context
 
 interface IssueItemProps {
   issue: Issue;
@@ -16,16 +13,6 @@ const IssueItem = ({ issue }: IssueItemProps) => {
     navigate(`${issue.number}`);
   };
   return (
-<<<<<<< HEAD
-    <div onClick={handleOpen} style={{ border: '1px solid black' }}>
-      <div>
-        #{issue.number} {issue.title}
-      </div>
-      <div>{issue.comments}</div>
-      <div>작성자: {issue.user.login}</div>
-      <div>작성일: {issue.created_at}</div>
-    </div>
-=======
     <IssueItemStyle onClick={handleClickItem}>
       <TitleArea>
         <span className="issue-number">#{issue.number}</span>
@@ -40,7 +27,6 @@ const IssueItem = ({ issue }: IssueItemProps) => {
         </AuthorArea>
       </ContentsArea>
     </IssueItemStyle>
->>>>>>> 7-feat-add-github-context
   );
 };
 
