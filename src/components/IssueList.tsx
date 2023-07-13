@@ -1,30 +1,48 @@
+import { useContext } from 'react';
 import IssueItem from './IssueItem';
-import useGitHubQuery from '../common/hook/useGitHubQuery';
+import { styled } from 'styled-components';
+import { GitHubStateContext } from '../common/context/GitHubContext';
+import useInfiniteScroll from '../common/hook/useInfiniteScroll';
+import { GitHubState } from '../common/interface/GitHub';
+import useGithubAPI from '../common/hook/useGitHubAPI';
+import Loading from './Loading';
 
-interface IssueListProps {
-  path: string;
-}
+const IssueList = () => {
+  const { loading, error, issues } =
+    useContext<GitHubState>(GitHubStateContext);
 
-const IssueList = ({ path }: IssueListProps) => {
-  const { isLoading, error, data } = useGitHubQuery<any>(
-    `/repos${path}/issues?sort=comments`,
-  );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const { fetchIssues } = useGithubAPI('facebook', 'react');
+  const { setTarget } = useInfiniteScroll({
+    fetchNextPage: fetchIssues,
+  });
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>error: {error}</div>;
   }
 
   return (
-    <div>
-      {data.map((issue: any) => (
-        <IssueItem key={issue.id} issue={issue} path={path} />
+    <IssueListStyle>
+      {issues.map((issue, idx) => (
+        <>
+          <IssueItem key={idx} issue={issue} />
+          {(idx + 1) % 5 === 0 && <div>광고</div>}
+        </>
       ))}
-    </div>
+      {loading ? <Loading /> : <div ref={setTarget} />}
+    </IssueListStyle>
   );
 };
+
+const IssueListStyle = styled.article`
+  max-width: 640px;
+  width: 100%;
+  height: 800px;
+  overflow-y: scroll;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+`;
 
 export default IssueList;
