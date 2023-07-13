@@ -1,33 +1,28 @@
-import { useEffect, useState } from 'react';
-
-import { getIssues } from '../common/api/github/repo';
-
 import IssueItem from './IssueItem';
+import useGitHubQuery from '../common/hook/useGitHubQuery';
 
 interface IssueListProps {
   path: string;
 }
 
 const IssueList = ({ path }: IssueListProps) => {
-  const [issues, setIssues] = useState<any>();
+  const { isLoading, error, data } = useGitHubQuery<any>(
+    `/repos${path}/issues?sort=comments`,
+  );
 
-  const fetchIssues = async () => {
-    const queries = 'sort=comments';
-    const res = await getIssues(path, queries);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    setIssues(res);
-  };
-
-  useEffect(() => {
-    fetchIssues();
-  }, []);
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
-      {issues &&
-        issues.map((issue: any) => (
-          <IssueItem key={issue.id} issue={issue} path={path} />
-        ))}
+      {data.map((issue: any) => (
+        <IssueItem key={issue.id} issue={issue} path={path} />
+      ))}
     </div>
   );
 };

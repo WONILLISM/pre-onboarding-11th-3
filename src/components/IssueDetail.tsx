@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { getIssue } from '../common/api/github/repo';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import useGitHubQuery from '../common/hook/useGitHubQuery';
 
 interface IssueDetailProps {
   open: boolean;
@@ -13,19 +12,17 @@ interface IssueDetailProps {
 }
 
 const IssueDetail = ({ open, issueNum, path }: IssueDetailProps) => {
-  const [issue, setIssue] = useState<any>();
+  const { isLoading, error, data } = useGitHubQuery<any>(
+    `/repos${path}/issues/${issueNum}`,
+  );
 
-  const fetchIssue = async () => {
-    const res = await getIssue(issueNum, path);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    setIssue(res);
-  };
-
-  useEffect(() => {
-    fetchIssue();
-  }, []);
-
-  console.log(issue);
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div>
@@ -78,7 +75,7 @@ const IssueDetail = ({ open, issueNum, path }: IssueDetailProps) => {
               },
             }}
           >
-            {issue.body}
+            {data.body}
           </ReactMarkdown>
         </div>
       )}
