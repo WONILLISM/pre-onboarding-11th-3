@@ -1,25 +1,21 @@
-import { useEffect, useState } from 'react';
-
-import { getRepository } from '../common/api/github/repo';
 import IssueList from '../components/IssueList';
+import useGitHubQuery from '../common/hook/useGitHubQuery';
 
 const PATH = '/facebook/react';
 
 const Issues = () => {
-  const [repo, setRepo] = useState<any>();
+  const { isLoading, error, data } = useGitHubQuery<any>(`/repos${PATH}`);
 
-  const fetchRepository = async () => {
-    const res = await getRepository(PATH);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-    setRepo(res);
-  };
-
-  useEffect(() => {
-    fetchRepository();
-  }, []);
+  if (error) {
+    return <div>{error}</div>;
+  }
   return (
     <div>
-      <div>{repo && repo.full_name}</div>
+      <div>{data.full_name}</div>
       <IssueList path={PATH} />
     </div>
   );
