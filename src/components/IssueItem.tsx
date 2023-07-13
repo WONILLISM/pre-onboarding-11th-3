@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import IssueDetail from './IssueDetail';
 
 interface IssueItemProps {
   issue: any;
@@ -21,7 +20,6 @@ const IssueItem = ({ issue, path }: IssueItemProps) => {
       <div>{issue.comments}</div>
       <div>작성자: {issue.user.login}</div>
       <div>작성일: {issue.created_at}</div>
-      <IssueDetail open={open} issueNum={issue.number} path={path} />
     </div>
   );
 };

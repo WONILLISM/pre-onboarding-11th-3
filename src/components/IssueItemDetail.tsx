@@ -3,7 +3,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import useGitHubQuery from '../common/hook/useGitHubQuery';
+import useGitHubQuery from '../common/hook/useGitHubAPI';
 
 interface IssueDetailProps {
   open: boolean;
@@ -11,7 +11,7 @@ interface IssueDetailProps {
   path: string;
 }
 
-const IssueDetail = ({ open, issueNum, path }: IssueDetailProps) => {
+const IssueItemDetail = ({ open, issueNum, path }: IssueDetailProps) => {
   const { isLoading, error, data } = useGitHubQuery<any>(
     `/repos${path}/issues/${issueNum}`,
   );
@@ -83,4 +83,4 @@ const IssueDetail = ({ open, issueNum, path }: IssueDetailProps) => {
   );
 };
 
-export default IssueDetail;
+export default IssueItemDetail;

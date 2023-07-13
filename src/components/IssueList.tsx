@@ -1,30 +1,19 @@
-import IssueItem from './IssueItem';
-import useGitHubQuery from '../common/hook/useGitHubQuery';
+import { useContext } from 'react';
 
-interface IssueListProps {
-  path: string;
-}
+import { GitHubContext, GitHubState } from '../common/context/GitHubContext';
 
-const IssueList = ({ path }: IssueListProps) => {
-  const { isLoading, error, data } = useGitHubQuery<any>(
-    `/repos${path}/issues?sort=comments`,
-  );
+const IssueList = () => {
+  const { issues, loading, error }: GitHubState = useContext(GitHubContext);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <div>Loading ... </div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div>error: {error}</div>;
   }
 
-  return (
-    <div>
-      {data.map((issue: any) => (
-        <IssueItem key={issue.id} issue={issue} path={path} />
-      ))}
-    </div>
-  );
+  return <div></div>;
 };
 
 export default IssueList;
