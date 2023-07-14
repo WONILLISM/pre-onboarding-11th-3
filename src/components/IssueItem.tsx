@@ -9,7 +9,7 @@ interface IssueItemProps {
 const IssueItem = ({ issue }: IssueItemProps) => {
   const navigate = useNavigate();
   const handleClickItem = () => {
-    navigate(`${issue.number}`);
+    navigate(`${issue.number}`, { state: issue });
   };
   return (
     <IssueItemStyle onClick={handleClickItem}>
