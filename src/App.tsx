@@ -1,13 +1,5 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-<<<<<<< HEAD
-import MainLayout from './layouts/MainLayout';
-import Issues from './pages/Issues';
-import IssueDetail from './pages/IssueDetail';
-
-const router = createBrowserRouter([
-  {
-=======
 import MainLayout from './layouts/MainLayout/MainLayout';
 import Issues from './pages/Issues';
 import IssueDetail from './pages/IssueDetail';
@@ -16,7 +8,6 @@ import { createGlobalStyle } from 'styled-components';
 const router = createBrowserRouter([
   {
     path: '/',
->>>>>>> 7-feat-add-github-context
     element: <MainLayout />,
     children: [
       { path: '/', element: <Issues /> },
@@ -25,9 +16,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-<<<<<<< HEAD
-const App = () => <RouterProvider router={router} />;
-=======
 const App = () => (
   <>
     <GlobalStyle />
@@ -62,6 +50,5 @@ const GlobalStyle = createGlobalStyle`
     background-color:#022534;
   }
 `;
->>>>>>> 7-feat-add-github-context
 
 export default App;
