@@ -9,6 +9,26 @@
 
 # 시작하기  
 
+```
+git clone https://github.com/eosun77/wanted-pre-onboarding-frontend.git
+```
+
+`.env` 파일을 `root` 폴더에 생성합니다.
+
+```.env
+REACT_APP_GITHUB_ACCESS_TOKEN = <your github token>
+REACT_APP_GITHUB_API_URL = "https://api.github.com"
+```
+
+`root` 폴더에서 실행합니다.
+
+```
+yarn install
+yarn start
+```
+
+
+
 
 ## 사용 방법  
 
