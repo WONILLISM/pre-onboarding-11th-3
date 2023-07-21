@@ -161,3 +161,47 @@ const fetchIssues = async () => {
 
 return { fetchRepository, fetchIssues };
 ```
+
+### 무한 스크롤
+
+- useRef를 사용하여 target ref를 생성하여 페이지의 끝 부분을 가리키는 DOM 요소에 연결시킴
+- root, rootMargin, threshold 옵션을 사용하여 observer의 동작을 조절
+  - IntersectionObserver 콜백 함수는 관찰 요소들에 대한 정보를 IntersectionObserverEntry 객체의 배열인 entries 를 인자로 받음
+  - 이 객체중에 isIntersecting 속성은 관찰 대상 요소가 보이는지 여부를 판단
+  - useInfiniteScroll hook 안에서 상태로 관리하여, target ref를 관찰할 때 setTarget을 실행
+
+```
+import { useEffect, useState } from 'react';
+import throttle from '../utils/throttle';
+
+interface Props {
+  fetchNextPage: () => void;
+  threshold?: number;
+}
+function useInfiniteScroll({ fetchNextPage, threshold }: Props) {
+  const [target, setTarget] = useState<HTMLDivElement | null | undefined>(null);
+
+  const observerCallback: IntersectionObserverCallback = throttle((entries) => {
+    if (entries[0].isIntersecting) {
+      fetchNextPage();
+    }
+  });
+
+  useEffect(() => {
+    if (!target) return;
+
+    const observer = new IntersectionObserver(observerCallback, {
+      // root: null,
+      rootMargin: '100px',
+      threshold,
+    });
+
+    observer.observe(target);
+    return () => observer.unobserve(target);
+  }, [observerCallback, threshold, target]);
+
+  return { setTarget };
+}
+
+export default useInfiniteScroll;
+```
