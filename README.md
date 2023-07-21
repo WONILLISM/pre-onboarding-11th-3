@@ -10,7 +10,7 @@
 # 시작하기  
 
 ```
-git clone https://github.com/eosun77/wanted-pre-onboarding-frontend.git
+git clone https://github.com/WONILLISM/pre-onboarding-11th-3.git
 ```
 
 `.env` 파일을 `root` 폴더에 생성합니다.
