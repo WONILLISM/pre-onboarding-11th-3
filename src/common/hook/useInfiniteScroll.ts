@@ -18,6 +18,8 @@ function useInfiniteScroll({ fetchNextPage, threshold }: Props) {
     if (!target) return;
 
     const observer = new IntersectionObserver(observerCallback, {
+      // root: null,
+      rootMargin: '100px',
       threshold,
     });
 

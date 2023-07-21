@@ -29,6 +29,8 @@ const MainHeader = () => {
 };
 
 const HeaderStyle = styled.header`
+  padding: 20px;
+  font-size: 32px;
   display: flex;
   justify-content: center;
 `;

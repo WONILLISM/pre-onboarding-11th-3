@@ -13,6 +13,8 @@ const useGithubAPI = (owner: string, repo: string) => {
   if (dispatch === undefined) throw new Error('error');
 
   const fetchRepository = async (): Promise<void> => {
+    // dispatch({ type: 'LOADING' });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const repositoryResponse = await githubAPI.get<Repository>(
         `/repos/${owner}/${repo}`,
@@ -28,6 +30,8 @@ const useGithubAPI = (owner: string, repo: string) => {
   };
 
   const fetchIssues = async (): Promise<void> => {
+    dispatch({ type: 'LOADING' });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     try {
       const issuesResponse = await githubAPI.get<Issue[]>(
         `/repos/${owner}/${repo}/issues?sort=comments&page=${state.page}&per_page=10`,

@@ -44,6 +44,9 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
 
+    scrollbar-width: thin;
+    scrollbar-color: black white; 
+
     width: 100%;
     height: 100%;
     color: #EFF4F4;

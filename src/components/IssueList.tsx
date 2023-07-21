@@ -6,6 +6,7 @@ import useInfiniteScroll from '../common/hook/useInfiniteScroll';
 import { GitHubState } from '../common/interface/GitHub';
 import useGithubAPI from '../common/hook/useGitHubAPI';
 import Loading from './Loading';
+import Ad from './Ad';
 
 const IssueList = () => {
   const { loading, error, issues } =
@@ -14,6 +15,7 @@ const IssueList = () => {
   const { fetchIssues } = useGithubAPI('facebook', 'react');
   const { setTarget } = useInfiniteScroll({
     fetchNextPage: fetchIssues,
+    threshold: 1.0,
   });
 
   if (error) {
@@ -25,7 +27,7 @@ const IssueList = () => {
       {issues.map((issue, idx) => (
         <>
           <IssueItem key={idx} issue={issue} />
-          {(idx + 1) % 5 === 0 && <div>광고</div>}
+          {(idx + 1) % 5 === 0 && <Ad />}
         </>
       ))}
       {loading ? <Loading /> : <div ref={setTarget} />}

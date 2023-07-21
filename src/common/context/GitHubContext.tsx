@@ -20,6 +20,11 @@ export const gitHubReducer: Reducer<GitHubState, GitHubAction> = (
   action: GitHubAction,
 ) => {
   switch (action.type) {
+    case 'LOADING':
+      return {
+        ...state,
+        loading: true,
+      };
     case 'FETCH_REPO_SUCCESS':
       return {
         ...state,

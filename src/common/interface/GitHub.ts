@@ -25,6 +25,7 @@ export interface GitHubState {
 }
 
 export type GitHubAction =
+  | { type: 'LOADING' }
   | { type: 'FETCH_REPO_SUCCESS'; payload: Repository }
   | { type: 'FETCH_ISSUES_SUCCESS'; payload: Issue[] }
   | { type: 'FETCH_ERROR'; payload: any };
