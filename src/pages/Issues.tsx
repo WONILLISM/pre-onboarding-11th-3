@@ -2,11 +2,7 @@ import { styled } from 'styled-components';
 import IssueList from '../components/IssueList';
 
 const Issues = () => {
-  return (
-    <MainStyle>
-      <IssueList />
-    </MainStyle>
-  );
+  return <MainStyle>{/* <IssueList /> */}</MainStyle>;
 };
 
 const MainStyle = styled.main`

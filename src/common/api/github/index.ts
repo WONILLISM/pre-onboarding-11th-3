@@ -8,3 +8,24 @@ export const githubAPI = axios.create({
     'X-GitHub-Api-Version': '2022-11-28',
   },
 });
+
+export interface SearchParams {
+  q: string;
+  sort?: 'stars' | 'forks' | 'help-wanted-issues' | 'updated';
+  order?: 'desc' | 'asc';
+  per_page?: number;
+  page?: number;
+}
+
+export interface SearchRepo {
+  id: number;
+  full_name: string;
+}
+
+export const getSearchList = async (params: SearchParams) => {
+  const response = await githubAPI.get('/search/repositories', {
+    params: params,
+  });
+
+  return response;
+};
