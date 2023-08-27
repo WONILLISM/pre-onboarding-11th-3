@@ -29,3 +29,21 @@ export const getSearchList = async (params: SearchParams) => {
 
   return response;
 };
+
+export const getIssueList = async (owner: string, repo: string) => {
+  const response = await githubAPI.get(`/repos/${owner}/${repo}/issues`);
+
+  return response;
+};
+
+export const getIssueDetail = async (
+  owner: string,
+  repo: string,
+  issueNum: number,
+) => {
+  const response = await githubAPI.get(
+    `/repos/${owner}/${repo}/issues/${issueNum}`,
+  );
+
+  return response;
+};

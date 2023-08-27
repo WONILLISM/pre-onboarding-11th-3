@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useRepoSearch from '../common/hook/useRepoSearch';
 
@@ -11,6 +12,15 @@ const SearchBar = () => {
     inputChange,
   } = useRepoSearch();
 
+  const navigate = useNavigate();
+
+  const handleItemClick = (title: string) => {
+    const [owner, repo] = title.split('/');
+
+    navigate(`/issues?owner=${owner}&repo=${repo}`);
+    handleFocus(false);
+  };
+
   return (
     <SearchBarStyle>
       <SearchTextArea>
@@ -21,7 +31,6 @@ const SearchBar = () => {
             placeholder="Repository 이름을 입력해주세요."
             onChange={inputChange}
             onFocus={() => handleFocus(true)}
-            onBlur={() => handleFocus(false)}
           />
         </SearchTextField>
         <SearchButton>검색</SearchButton>
@@ -33,9 +42,16 @@ const SearchBar = () => {
           <SearchResultMessage>
             {searchInput === '' ? '검색 결과 없음' : isLoading && '검색중...'}
           </SearchResultMessage>
-          {searchList.map((item) => (
-            <SearchItem key={item.id}>{item.full_name}</SearchItem>
-          ))}
+          <ul>
+            {searchList.map((item) => (
+              <SearchItem
+                key={item.id}
+                onClick={() => handleItemClick(item.full_name)}
+              >
+                {item.full_name}
+              </SearchItem>
+            ))}
+          </ul>
         </SearchResultStyle>
       )}
     </SearchBarStyle>
@@ -109,7 +125,7 @@ const SearchResultMessage = styled.div`
   text-align: center;
 `;
 
-const SearchItem = styled.div`
+const SearchItem = styled.li`
   padding: 4px 8px;
 
   &:hover {
