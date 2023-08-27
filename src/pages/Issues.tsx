@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
-import IssueList from '../components/IssueList';
 import { useLocation, useParams } from 'react-router-dom';
+import IssueList from '../components/IssueList';
 
 const Issues = () => {
   const location = useLocation();
+
   console.log(location);
 
   return <MainStyle>{/* <IssueList /> */}</MainStyle>;

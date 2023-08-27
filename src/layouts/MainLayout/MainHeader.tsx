@@ -1,8 +1,5 @@
-import { useContext, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { GitHubStateContext } from '../../common/context/GitHubContext';
-import { GitHubState } from '../../common/interface/GitHub';
-import useGithubAPI from '../../common/hook/useGitHubAPI';
+
 import SearchBar from '../../components/SearchBar';
 
 const MainHeader = () => {

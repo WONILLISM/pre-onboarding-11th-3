@@ -1,38 +1,12 @@
-import { useContext } from 'react';
-import IssueItem from './IssueItem';
 import { styled } from 'styled-components';
-import { GitHubStateContext } from '../common/context/GitHubContext';
-import useInfiniteScroll from '../common/hook/useInfiniteScroll';
-import { GitHubState } from '../common/interface/GitHub';
-import useGithubAPI from '../common/hook/useGitHubAPI';
-import Loading from './Loading';
-import Ad from './Ad';
 
 const IssueList = () => {
-  const { loading, error, issues } =
-    useContext<GitHubState>(GitHubStateContext);
+  // const { setTarget } = useInfiniteScroll({
+  //   fetchNextPage: fetchIssues,
+  //   threshold: 1.0,
+  // });
 
-  const { fetchIssues } = useGithubAPI('facebook', 'react');
-  const { setTarget } = useInfiniteScroll({
-    fetchNextPage: fetchIssues,
-    threshold: 1.0,
-  });
-
-  if (error) {
-    return <div>error: {error}</div>;
-  }
-
-  return (
-    <IssueListStyle>
-      {issues.map((issue, idx) => (
-        <>
-          <IssueItem key={idx} issue={issue} />
-          {(idx + 1) % 5 === 0 && <Ad />}
-        </>
-      ))}
-      {loading ? <Loading /> : <div ref={setTarget} />}
-    </IssueListStyle>
-  );
+  return <IssueListStyle></IssueListStyle>;
 };
 
 const IssueListStyle = styled.article`
