@@ -4,6 +4,7 @@ import MainLayout from './layouts/MainLayout/MainLayout';
 import Issues from './pages/Issues';
 import IssueDetail from './pages/IssueDetail';
 import { createGlobalStyle } from 'styled-components';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const router = createBrowserRouter([
   {
@@ -19,11 +20,13 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 const App = () => (
-  <>
+  <QueryClientProvider client={queryClient}>
     <GlobalStyle />
     <RouterProvider router={router} />
-  </>
+  </QueryClientProvider>
 );
 
 const GlobalStyle = createGlobalStyle`

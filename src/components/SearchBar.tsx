@@ -1,16 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useRepoSearch from '../common/hook/useRepoSearch';
+import useSearch from '../common/hook/useSearch';
+import { SearchParams, SearchRepo, getSearchRepos } from '../common/api/github';
+import { useQuery } from 'react-query';
 
 const SearchBar = () => {
   const {
-    isLoading,
     isFocus,
-    handleFocus,
+    isDebouncing,
     searchInput,
-    searchList,
-    inputChange,
-  } = useRepoSearch();
+    searchParams,
+    handleFocus,
+    handleSearchParams,
+    handleSearchInputChange,
+  } = useSearch<SearchParams>({
+    initialParams: { q: '', per_page: 5 },
+    options: { debouce: true },
+  });
+
+  const { status, data } = useQuery({
+    queryKey: ['search_repo', searchParams.q],
+    queryFn: () => getSearchRepos(searchParams),
+    enabled: !!searchParams.q,
+    refetchOnWindowFocus: false,
+  });
 
   const navigate = useNavigate();
 
@@ -21,6 +34,8 @@ const SearchBar = () => {
     handleFocus(false);
   };
 
+  console.log(data);
+
   return (
     <SearchBarStyle>
       <SearchTextArea>
@@ -29,7 +44,7 @@ const SearchBar = () => {
             type="text"
             value={searchInput}
             placeholder="Repository 이름을 입력해주세요."
-            onChange={inputChange}
+            onChange={handleSearchInputChange}
             onFocus={() => handleFocus(true)}
           />
         </SearchTextField>
@@ -40,17 +55,20 @@ const SearchBar = () => {
         <SearchResultStyle>
           <SearchResultHeader>검색 결과</SearchResultHeader>
           <SearchResultMessage>
-            {searchInput === '' ? '검색 결과 없음' : isLoading && '검색중...'}
+            {searchInput === ''
+              ? '검색 결과 없음'
+              : isDebouncing && '검색중...'}
           </SearchResultMessage>
           <ul>
-            {searchList.map((item) => (
-              <SearchItem
-                key={item.id}
-                onClick={() => handleItemClick(item.full_name)}
-              >
-                {item.full_name}
-              </SearchItem>
-            ))}
+            {data &&
+              data.map((item) => (
+                <SearchItem
+                  key={item.id}
+                  onClick={() => handleItemClick(item.full_name)}
+                >
+                  {item.full_name}
+                </SearchItem>
+              ))}
           </ul>
         </SearchResultStyle>
       )}

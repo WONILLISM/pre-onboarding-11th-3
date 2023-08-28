@@ -22,12 +22,14 @@ export interface SearchRepo {
   full_name: string;
 }
 
-export const getSearchList = async (params: SearchParams) => {
+export const getSearchRepos = async (
+  params: SearchParams,
+): Promise<SearchRepo[]> => {
   const response = await githubAPI.get('/search/repositories', {
     params: params,
   });
 
-  return response;
+  return response.data.items;
 };
 
 export const getIssueList = async (owner: string, repo: string) => {
