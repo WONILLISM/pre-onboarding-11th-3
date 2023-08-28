@@ -18,7 +18,7 @@ const SearchBar = () => {
     options: { debouce: true },
   });
 
-  const { status, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ['search_repo', searchParams.q],
     queryFn: () => getSearchRepos(searchParams),
     enabled: !!searchParams.q,
@@ -57,19 +57,21 @@ const SearchBar = () => {
           <SearchResultMessage>
             {searchInput === ''
               ? '검색 결과 없음'
-              : isDebouncing && '검색중...'}
+              : (isDebouncing || isLoading) && '검색중...'}
           </SearchResultMessage>
-          <ul>
-            {data &&
-              data.map((item) => (
-                <SearchItem
-                  key={item.id}
-                  onClick={() => handleItemClick(item.full_name)}
-                >
-                  {item.full_name}
-                </SearchItem>
-              ))}
-          </ul>
+          {searchInput !== '' && (
+            <ul>
+              {data &&
+                data.map((item) => (
+                  <SearchItem
+                    key={item.id}
+                    onClick={() => handleItemClick(item.full_name)}
+                  >
+                    {item.full_name}
+                  </SearchItem>
+                ))}
+            </ul>
+          )}
         </SearchResultStyle>
       )}
     </SearchBarStyle>

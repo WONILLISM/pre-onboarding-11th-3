@@ -1,13 +1,20 @@
 import { styled } from 'styled-components';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import IssueList from '../components/IssueList';
+import { parseQueryString } from '../common/utils/parseQueryString';
 
 const Issues = () => {
-  const location = useLocation();
+  const { search } = useLocation();
 
-  console.log(location);
+  const res = parseQueryString(search);
 
-  return <MainStyle>{/* <IssueList /> */}</MainStyle>;
+  if (!res) return <div>404</div>;
+
+  return (
+    <MainStyle>
+      <IssueList />
+    </MainStyle>
+  );
 };
 
 const MainStyle = styled.main`
