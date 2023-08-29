@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import throttle from '../utils/throttle';
+import throttle from '../lib/utils/throttle';
 
 interface Props {
   fetchNextPage: () => void;

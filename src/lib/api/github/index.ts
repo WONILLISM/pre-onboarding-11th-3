@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Issue } from '../../interface/GitHub';
+import { Issue } from '../../../types/GitHub';
 
 export const githubAPI = axios.create({
   baseURL: process.env.REACT_APP_GITHUB_API_URL,

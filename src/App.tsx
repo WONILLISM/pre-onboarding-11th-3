@@ -1,10 +1,11 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { createGlobalStyle } from 'styled-components';
 
-import MainLayout from './layouts/MainLayout/MainLayout';
+import MainLayout from './components/layout/MainLayout';
+
 import Issues from './pages/Issues';
 import IssueDetail from './pages/IssueDetail';
-import { createGlobalStyle } from 'styled-components';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 const router = createBrowserRouter([
   {

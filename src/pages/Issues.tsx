@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import IssueList from '../components/IssueList';
-import { parseQueryString } from '../common/utils/parseQueryString';
+import { parseQueryString } from '../lib/utils/parseQueryString';
 
 const Issues = () => {
   const { search } = useLocation();

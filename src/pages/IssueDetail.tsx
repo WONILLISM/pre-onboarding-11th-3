@@ -1,11 +1,11 @@
+import { useLocation } from 'react-router-dom';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { nord } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
-import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { Issue } from '../common/interface/GitHub';
+import { Issue } from '../types/GitHub';
 
 const Markdown = ({ issue }: { issue: Issue }) => {
   return (

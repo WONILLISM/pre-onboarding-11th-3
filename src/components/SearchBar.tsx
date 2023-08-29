@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useSearch from '../common/hook/useSearch';
-import { SearchParams, SearchRepo, getSearchRepos } from '../common/api/github';
+import useSearch from '../hooks/useSearch';
+import { SearchParams, SearchRepo, getSearchRepos } from '../lib/api/github';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 

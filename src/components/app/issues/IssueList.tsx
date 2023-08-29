@@ -1,7 +1,8 @@
 import { styled } from 'styled-components';
 import { useQuery } from 'react-query';
-import { getIssueList } from '../common/api/github';
+
 import IssueItem from './IssueItem';
+import { getIssueList } from '../../../lib/api/github';
 
 interface IssueListProps {
   owner: string;

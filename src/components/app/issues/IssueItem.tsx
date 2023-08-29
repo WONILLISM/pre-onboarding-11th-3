@@ -1,6 +1,6 @@
-import { Issue } from '../common/interface/GitHub';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { Issue } from '../../../types/GitHub';
 
 interface IssueItemProps {
   issue: Issue;
