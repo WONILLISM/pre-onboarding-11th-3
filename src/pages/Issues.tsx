@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import IssueList from '../components/IssueList';
+
+import IssueList from '../components/app/issues/IssueList';
 import { parseQueryString } from '../lib/utils/parseQueryString';
 
 const Issues = () => {
