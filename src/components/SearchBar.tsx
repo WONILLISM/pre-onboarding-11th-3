@@ -1,11 +1,13 @@
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import useSearch from '../hooks/useSearch';
 import { SearchParams, SearchRepo, getSearchRepos } from '../lib/api/github';
-import { useQuery } from 'react-query';
-import { useState } from 'react';
 
 const SearchBar = () => {
+  const searchBarRef = useRef<HTMLDivElement | null>(null);
+
   const {
     isFocus,
     isDebouncing,
@@ -39,47 +41,63 @@ const SearchBar = () => {
     handleFocus(false);
   };
 
-  console.log(data);
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        searchBarRef.current &&
+        !searchBarRef.current.contains(e.target as Node)
+      ) {
+        handleFocus(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, []);
 
   return (
     <SearchBarStyle>
       <RepoTitle>{title}</RepoTitle>
-      <SearchTextArea>
-        <SearchTextField>
-          <SearchInput
-            type="text"
-            value={searchInput}
-            placeholder="Repository 이름을 입력해주세요."
-            onChange={handleSearchInputChange}
-            onFocus={() => handleFocus(true)}
-          />
-        </SearchTextField>
-        <SearchButton>검색</SearchButton>
-      </SearchTextArea>
+      <div ref={searchBarRef}>
+        <SearchTextArea>
+          <SearchTextField>
+            <SearchInput
+              type="text"
+              value={searchInput}
+              placeholder="Repository 이름을 입력해주세요."
+              onChange={handleSearchInputChange}
+              onFocus={() => handleFocus(true)}
+            />
+          </SearchTextField>
+          <SearchButton>검색</SearchButton>
+        </SearchTextArea>
 
-      {isFocus && (
-        <SearchResultStyle>
-          <SearchResultHeader>검색 결과</SearchResultHeader>
-          <SearchResultMessage>
-            {searchInput === ''
-              ? '검색 결과 없음'
-              : (isDebouncing || isLoading) && '검색중...'}
-          </SearchResultMessage>
-          {searchInput !== '' && (
-            <ul>
-              {data &&
-                data.map((item) => (
-                  <SearchItem
-                    key={item.id}
-                    onClick={() => handleItemClick(item.full_name)}
-                  >
-                    {item.full_name}
-                  </SearchItem>
-                ))}
-            </ul>
-          )}
-        </SearchResultStyle>
-      )}
+        {isFocus && (
+          <SearchResultStyle>
+            <SearchResultHeader>검색 결과</SearchResultHeader>
+            <SearchResultMessage>
+              {searchInput === ''
+                ? '검색 결과 없음'
+                : (isDebouncing || isLoading) && '검색중...'}
+            </SearchResultMessage>
+            {searchInput !== '' && (
+              <ul>
+                {data &&
+                  data.map((item) => (
+                    <SearchItem
+                      key={item.id}
+                      onClick={() => handleItemClick(item.full_name)}
+                    >
+                      {item.full_name}
+                    </SearchItem>
+                  ))}
+              </ul>
+            )}
+          </SearchResultStyle>
+        )}
+      </div>
     </SearchBarStyle>
   );
 };
@@ -89,8 +107,6 @@ const SearchBarStyle = styled.div`
   max-width: 728px;
   display: flex;
   flex-direction: column;
-
-  gap: 8px;
 `;
 
 const RepoTitle = styled.h1`
@@ -137,6 +153,7 @@ const SearchButton = styled.div`
 `;
 
 const SearchResultStyle = styled.div`
+  margin-top: 8px;
   border: 1px solid #a5a5ff;
   background-color: #26414ecc;
   border-radius: 1em;
