@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Issue } from '../../interface/GitHub';
 
 export const githubAPI = axios.create({
   baseURL: process.env.REACT_APP_GITHUB_API_URL,
@@ -32,10 +33,15 @@ export const getSearchRepos = async (
   return response.data.items;
 };
 
-export const getIssueList = async (owner: string, repo: string) => {
-  const response = await githubAPI.get(`/repos/${owner}/${repo}/issues`);
+export const getIssueList = async (
+  owner: string,
+  repo: string,
+): Promise<Issue[]> => {
+  const response = await githubAPI.get(
+    `/repos/${owner}/${repo}/issues?per_page=6`,
+  );
 
-  return response;
+  return response.data;
 };
 
 export const getIssueDetail = async (

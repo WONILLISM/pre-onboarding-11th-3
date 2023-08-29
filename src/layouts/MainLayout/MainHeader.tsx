@@ -11,9 +11,16 @@ const MainHeader = () => {
 };
 
 const HeaderStyle = styled.header`
-  padding: 20px;
+  position: fixed;
+  z-index: 99;
+
+  width: 100%;
+
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
 `;
 
 export default MainHeader;

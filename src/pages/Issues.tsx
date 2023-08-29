@@ -12,7 +12,7 @@ const Issues = () => {
 
   return (
     <MainStyle>
-      <IssueList />
+      <IssueList owner={res.owner} repo={res.repo} />
     </MainStyle>
   );
 };

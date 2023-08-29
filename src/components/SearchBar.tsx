@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useSearch from '../common/hook/useSearch';
 import { SearchParams, SearchRepo, getSearchRepos } from '../common/api/github';
 import { useQuery } from 'react-query';
+import { useState } from 'react';
 
 const SearchBar = () => {
   const {
@@ -14,7 +15,7 @@ const SearchBar = () => {
     handleSearchParams,
     handleSearchInputChange,
   } = useSearch<SearchParams>({
-    initialParams: { q: '', per_page: 5 },
+    initialParams: { q: '', per_page: 5, sort: 'stars' },
     options: { debouce: true },
   });
 
@@ -25,10 +26,14 @@ const SearchBar = () => {
     refetchOnWindowFocus: false,
   });
 
+  const [title, setTitle] = useState<string>('');
+
   const navigate = useNavigate();
 
   const handleItemClick = (title: string) => {
     const [owner, repo] = title.split('/');
+
+    setTitle(title);
 
     navigate(`/issues?owner=${owner}&repo=${repo}`);
     handleFocus(false);
@@ -38,6 +43,7 @@ const SearchBar = () => {
 
   return (
     <SearchBarStyle>
+      <RepoTitle>{title}</RepoTitle>
       <SearchTextArea>
         <SearchTextField>
           <SearchInput
@@ -79,10 +85,16 @@ const SearchBar = () => {
 };
 
 const SearchBarStyle = styled.div`
+  width: 100%;
+  max-width: 728px;
   display: flex;
   flex-direction: column;
-  flex: 0 1 728px;
+
   gap: 8px;
+`;
+
+const RepoTitle = styled.h1`
+  font-size: 20px;
 `;
 
 const SearchTextArea = styled.div`
@@ -125,7 +137,8 @@ const SearchButton = styled.div`
 `;
 
 const SearchResultStyle = styled.div`
-  background-color: #24536a;
+  border: 1px solid #a5a5ff;
+  background-color: #26414ecc;
   border-radius: 1em;
 
   padding: 8px 16px;
