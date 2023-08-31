@@ -1,21 +1,21 @@
 const throttle = (handler: (...args: any[]) => void, timeout = 300) => {
-  let invokedTime: number;
-  let timer: number;
+  let lastInvokeTime: number;
+  let timer: ReturnType<typeof setTimeout>;
 
   return function (this: any, ...args: any[]) {
-    if (!invokedTime) {
+    const currentTime = Date.now();
+
+    if (currentTime - lastInvokeTime >= timeout) {
       handler.apply(this, args);
-      invokedTime = Date.now();
+      lastInvokeTime = currentTime;
     } else {
       clearTimeout(timer);
-      timer = window.setTimeout(
+      timer = setTimeout(
         () => {
-          if (Date.now() - invokedTime >= timeout) {
-            handler.apply(this, args);
-            invokedTime = Date.now();
-          }
+          handler.apply(this, args);
+          lastInvokeTime = Date.now();
         },
-        Math.max(timeout - (Date.now() - invokedTime), 0),
+        timeout - (currentTime - lastInvokeTime),
       );
     }
   };

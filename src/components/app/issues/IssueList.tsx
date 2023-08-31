@@ -1,8 +1,11 @@
+import { useInfiniteQuery } from 'react-query';
 import { styled } from 'styled-components';
-import { useQuery } from 'react-query';
+
+import useInfiniteScroll from '../../../hooks/useInfiniteScroll';
+import { getIssueList } from '../../../lib/api/github';
+import { Issue } from '../../../types/GitHub';
 
 import IssueItem from './IssueItem';
-import { getIssueList } from '../../../lib/api/github';
 
 interface IssueListProps {
   owner: string;
@@ -10,14 +13,27 @@ interface IssueListProps {
 }
 
 const IssueList = ({ owner, repo }: IssueListProps) => {
-  const { data: issues } = useQuery({
+  const { data, fetchNextPage, status } = useInfiniteQuery({
     queryKey: [owner, repo],
-    queryFn: () => getIssueList(owner, repo),
+    queryFn: ({ pageParam = 1 }) =>
+      getIssueList(owner, repo, { page: pageParam, per_page: 5 }),
+
+    getNextPageParam: (lastPage, allPosts) => {
+      return allPosts.length + 1;
+    },
+
+    refetchOnWindowFocus: false,
   });
+
+  const { setTarget } = useInfiniteScroll({ fetchNextPage });
 
   return (
     <IssueListStyle>
-      {issues && issues.map((item) => <IssueItem key={item.id} issue={item} />)}
+      {data &&
+        data.pages.map((page) =>
+          page.map((item: Issue) => <IssueItem key={item.id} issue={item} />),
+        )}
+      <div ref={setTarget} />
     </IssueListStyle>
   );
 };

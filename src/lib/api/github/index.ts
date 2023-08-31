@@ -36,10 +36,11 @@ export const getSearchRepos = async (
 export const getIssueList = async (
   owner: string,
   repo: string,
-): Promise<Issue[]> => {
-  const response = await githubAPI.get(
-    `/repos/${owner}/${repo}/issues?per_page=6`,
-  );
+  params?: { per_page?: number; page?: number },
+) => {
+  const response = await githubAPI.get(`/repos/${owner}/${repo}/issues`, {
+    params: params,
+  });
 
   return response.data;
 };

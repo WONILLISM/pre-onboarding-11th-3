@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import throttle from '../lib/utils/throttle';
 
+interface Options {
+  root?: Element | Document;
+  rootMargin?: string;
+  threshold: number | number[];
+}
+
 interface Props {
   fetchNextPage: () => void;
-  threshold?: number;
+  options?: Options;
 }
-function useInfiniteScroll({ fetchNextPage, threshold }: Props) {
+function useInfiniteScroll({ fetchNextPage, options }: Props) {
   const [target, setTarget] = useState<HTMLDivElement | null | undefined>(null);
 
   const observerCallback: IntersectionObserverCallback = throttle((entries) => {
@@ -17,15 +23,11 @@ function useInfiniteScroll({ fetchNextPage, threshold }: Props) {
   useEffect(() => {
     if (!target) return;
 
-    const observer = new IntersectionObserver(observerCallback, {
-      // root: null,
-      rootMargin: '100px',
-      threshold,
-    });
+    const observer = new IntersectionObserver(observerCallback, options);
 
     observer.observe(target);
     return () => observer.unobserve(target);
-  }, [observerCallback, threshold, target]);
+  }, [observerCallback, options, target]);
 
   return { setTarget };
 }
