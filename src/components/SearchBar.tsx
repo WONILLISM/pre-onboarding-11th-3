@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import useSearch from '../hooks/useSearch';
 import { SearchParams, SearchRepo, getSearchRepos } from '../lib/api/github';
+import { parseQueryString } from '../lib/utils/parseQueryString';
 
 const SearchBar = () => {
   const searchBarRef = useRef<HTMLDivElement | null>(null);
@@ -28,14 +29,10 @@ const SearchBar = () => {
     refetchOnWindowFocus: false,
   });
 
-  const [title, setTitle] = useState<string>('');
-
   const navigate = useNavigate();
 
   const handleItemClick = (title: string) => {
     const [owner, repo] = title.split('/');
-
-    setTitle(title);
 
     navigate(`/issues?owner=${owner}&repo=${repo}`);
     handleFocus(false);
@@ -59,7 +56,7 @@ const SearchBar = () => {
 
   return (
     <SearchBarStyle>
-      <RepoTitle>{title}</RepoTitle>
+      <RepoTlte />
       <div ref={searchBarRef}>
         <SearchTextArea>
           <SearchTextField>
@@ -102,6 +99,21 @@ const SearchBar = () => {
   );
 };
 
+const RepoTlte = () => {
+  const [title, setTitle] = useState<string>('');
+  const { search } = useLocation();
+
+  useEffect(() => {
+    const queries = parseQueryString(search);
+
+    if (!queries) return;
+
+    setTitle(`${queries.owner}/${queries.repo}`);
+  }, [parseQueryString, setTitle]);
+
+  return <RepoTitleStyle>{title}</RepoTitleStyle>;
+};
+
 const SearchBarStyle = styled.div`
   width: 100%;
   max-width: 728px;
@@ -109,7 +121,7 @@ const SearchBarStyle = styled.div`
   flex-direction: column;
 `;
 
-const RepoTitle = styled.h1`
+const RepoTitleStyle = styled.h1`
   font-size: 20px;
 `;
 
